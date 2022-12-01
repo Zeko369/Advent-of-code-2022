@@ -32,7 +32,7 @@ if (!process.env.SESSION_COOKIE) {
     );
 
     await writeFile(join(baseDir, "input.txt"), "");
-    await writeFile(join(baseDir, "input2.txt"), "");
+    await writeFile(join(baseDir, "input_demo.txt"), "");
   }
 
   while (true) {
