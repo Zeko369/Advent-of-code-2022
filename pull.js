@@ -1,9 +1,8 @@
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
-import { writeFile, stat, mkdir, copyFile } from "fs/promises";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { writeFile, stat, mkdir, copyFile } from "node:fs/promises";
 
 import dotenv from "dotenv";
-import axios from "axios";
 
 dotenv.config();
 if (!process.env.SESSION_COOKIE) {
@@ -39,30 +38,29 @@ if (!process.env.SESSION_COOKIE) {
   while (true) {
     const time = new Date();
     if (time.getHours() >= 6) {
-      const res = await axios
-        .get(`https://adventofcode.com/2022/day/${day}/input`, {
-          headers: {
-            Cookie: `session=${process.env.SESSION_COOKIE}`,
-          },
-        })
-        .then((res) => writeFile(join(baseDir, "input.txt"), res.data.trim(), "utf8"))
-        .catch((err) => {
-          if (err.response.status === 404) {
-            console.log("Not yet open");
-            return;
-          }
+      const res = await fetch(`https://adventofcode.com/2022/day/${day}/input`, {
+        headers: {
+          Cookie: `session=${process.env.SESSION_COOKIE}`,
+        },
+      });
 
-          throw err;
-        })
-        .then(() => true);
+      if (res.status === 404) {
+        console.log("Not available yet");
 
-      if (res === true) {
-        console.log("Done");
-        break;
+        console.log("Wait a sec...");
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        continue;
       }
-    }
 
-    console.log("Wait a sec...");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (res.status !== 200) {
+        throw new Error(`Unexpected status code: ${res.status}`);
+      }
+
+      const data = await res.text();
+      await writeFile(join(baseDir, "input.txt"), data.trim(), "utf8");
+
+      console.log("Done");
+      break;
+    }
   }
 })();
