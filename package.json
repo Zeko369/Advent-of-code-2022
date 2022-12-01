@@ -1,0 +1,19 @@
+{
+  "name": "advent-of-code-2021",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Zeko369/Advent-of-code-2021.git",
+  "author": "Fran Zekan <zekan.fran369@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "pull": "node ./pull.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0"
+  }
+}
