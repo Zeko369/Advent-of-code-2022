@@ -3,9 +3,11 @@ import { fileURLToPath } from "url";
 import { readFile, readdir } from "fs/promises";
 
 /**
+ * @template Item
  * @param {string} path
- * @param {(row: string, index: number) => any} mapper
+ * @param {(row: string, index: number) => Item} mapper
  * @param {string[][] | undefined} forcedData
+ * @returns {Promise<[string, Item[]][]>}
  */
 export const loadData = async (path, mapper = (a) => a, forcedData = undefined) => {
   if (forcedData) {
