@@ -1,6 +1,5 @@
 // @ts-check
 import { loadData } from "../shared/index.js";
-import * as utils from "../shared/utils.js";
 
 (async () => {
   for (const [name, data] of await loadData(import.meta.url, (row) => {
