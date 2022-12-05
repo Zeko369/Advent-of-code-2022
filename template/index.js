@@ -1,9 +1,11 @@
 // @ts-check
 import { loadData } from "../shared/index.js";
-import * as utils from "../shared/utils.js";
 
 (async () => {
   for (const [name, data] of await loadData(import.meta.url, (row) => {
+    // return row;
+    // return parseInt(row);
+
     const [a, b] = row.split(" ");
     return /** @type {const} */ ([a, parseInt(b)]);
   })) {
