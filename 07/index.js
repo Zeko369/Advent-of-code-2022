@@ -1,8 +1,8 @@
 // @ts-check
 import { loadData } from "../shared/index.js";
+import * as lodash from "lodash-es";
 
 (async () => {
-  const lodash = await (await import("lodash")).default;
   for (const [name, data] of await loadData(import.meta.url, (row) => {
     return row;
     // return parseInt(row);
