@@ -14,6 +14,8 @@ if (!process.env.SESSION_COOKIE) {
 const YEAR = 2022;
 const DAY = process.env.DATE ? parseInt(process.env.DATE) : new Date().getDate();
 
+const baseURL = `https://adventofcode.com/${YEAR}/day/${DAY}`;
+
 (async () => {
   const date = new Date();
   if (date.getMonth() !== 11) {
@@ -39,10 +41,8 @@ const DAY = process.env.DATE ? parseInt(process.env.DATE) : new Date().getDate()
   while (true) {
     const time = new Date();
     if (time.getHours() >= 6) {
-      const res = await fetch(`https://adventofcode.com/${YEAR}/day/${DAY}/input`, {
-        headers: {
-          Cookie: `session=${process.env.SESSION_COOKIE}`,
-        },
+      const res = await fetch(`${baseURL}/input`, {
+        headers: { Cookie: `session=${process.env.SESSION_COOKIE}` },
       });
 
       if (res.status === 404) {
@@ -60,7 +60,7 @@ const DAY = process.env.DATE ? parseInt(process.env.DATE) : new Date().getDate()
       const input = await res.text();
       await writeFile(join(baseDir, "input.txt"), input.trim(), "utf8");
 
-      const demoRes = await fetch(`https://adventofcode.com/${YEAR}/day/${DAY}`);
+      const demoRes = await fetch(baseURL);
       const demoHTML = await demoRes.text();
       const demoInput = demoHTML.match(/<pre><code>(.*?)<\/code><\/pre>/s);
       if (demoInput) {
