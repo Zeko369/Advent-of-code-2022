@@ -1,6 +1,8 @@
 // @ts-check
-import { loadData } from "../shared/index.js";
 import * as l from "lodash-es";
+
+import { loadData, copySolution } from "../shared/index.js";
+import * as globals from "../shared/globals.js";
 
 (async () => {
   for (const [name, data] of await loadData(import.meta.url, (row) => {
@@ -15,16 +17,21 @@ import * as l from "lodash-es";
     // const [a, b] = row.split(" ");
     // return /** @type {const} */ ([a, parseInt(b)]);
   })) {
+    const isMain = name === "input.txt";
     console.log(`------------- ${name} -------------`);
-    if (name === "input.txt") {
+    if (isMain) {
       continue;
     }
 
     let score = 0;
+    let score2 = 0;
 
     console.log(data.length);
 
     console.log("Task1", score);
-    // console.log("Task2", score);
+    isMain && (await copySolution(score));
+
+    // console.log("Task2", score2);
+    // isMain && (await copySolution(score2));
   }
 })();

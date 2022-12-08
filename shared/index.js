@@ -1,6 +1,8 @@
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-import { readFile, readdir } from "fs/promises";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { readFile, readdir } from "node:fs/promises";
+import { exec } from "node:child_process";
+import { promisify } from "node:util";
 
 /**
  * @template Item
@@ -25,4 +27,9 @@ export const loadData = async (path, mapper = (a) => a, forcedData = undefined) 
       return [file, data.split("\n").map(mapper)];
     })
   );
+};
+
+const execAsync = promisify(exec);
+export const copySolution = (solution) => {
+  return execAsync(`echo "${solution}" | pbcopy`);
 };
