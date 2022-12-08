@@ -1,3 +1,5 @@
+// @ts-check
+
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writeFile, stat, mkdir, copyFile } from "node:fs/promises";
@@ -9,17 +11,16 @@ if (!process.env.SESSION_COOKIE) {
   throw new Error("SESSION_COOKIE not set");
 }
 
+const YEAR = 2022;
+const DAY = process.env.DATE ? parseInt(process.env.DATE) : new Date().getDate();
+
 (async () => {
   const date = new Date();
   if (date.getMonth() !== 11) {
     throw new Error("Not December");
   }
 
-  const day = date.getDate();
-  const baseDir = join(
-    dirname(fileURLToPath(import.meta.url)),
-    day < 10 ? `0${day}` : day.toString()
-  );
+  const baseDir = join(dirname(fileURLToPath(import.meta.url)), `${DAY < 10 ? `0${DAY}` : DAY}`);
   try {
     await stat(baseDir);
   } catch (err) {
@@ -38,7 +39,7 @@ if (!process.env.SESSION_COOKIE) {
   while (true) {
     const time = new Date();
     if (time.getHours() >= 6) {
-      const res = await fetch(`https://adventofcode.com/2022/day/${day}/input`, {
+      const res = await fetch(`https://adventofcode.com/${YEAR}/day/${DAY}/input`, {
         headers: {
           Cookie: `session=${process.env.SESSION_COOKIE}`,
         },
@@ -56,8 +57,17 @@ if (!process.env.SESSION_COOKIE) {
         throw new Error(`Unexpected status code: ${res.status}`);
       }
 
-      const data = await res.text();
-      await writeFile(join(baseDir, "input.txt"), data.trim(), "utf8");
+      const input = await res.text();
+      await writeFile(join(baseDir, "input.txt"), input.trim(), "utf8");
+
+      const demoRes = await fetch(`https://adventofcode.com/${YEAR}/day/${DAY}`);
+      const demoHTML = await demoRes.text();
+      const demoInput = demoHTML.match(/<pre><code>(.*?)<\/code><\/pre>/s);
+      if (demoInput) {
+        await writeFile(join(baseDir, "input_demo.txt"), demoInput[1].trim(), "utf8");
+      } else {
+        console.log("No demo input found");
+      }
 
       console.log("Done");
       break;
