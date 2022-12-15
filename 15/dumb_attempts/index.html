@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- <canvas height="16384" width="16384" style="border: 1px solid red"></canvas> -->
+    <svg width="400000" height="400000" xmlns="http://www.w3.org/2000/svg">
+    </svg>
+
+    <script>
+      const data = [
+        { sensor: [2557588, 3759110], beacon: [2594144, 3746832] },
+        { sensor: [2684220, 1861612], beacon: [2816994, 2000000] },
+        { sensor: [1003382, 1946094], beacon: [1972543, 2563441] },
+        { sensor: [2142675, 1481541], beacon: [1932544, 967542] },
+        { sensor: [2796239, 1955744], beacon: [2816994, 2000000] },
+        { sensor: [3890852, 1818644], beacon: [3454737, 2547103] },
+        { sensor: [2828862, 1921726], beacon: [2816994, 2000000] },
+        { sensor: [2065247, 583957], beacon: [1932544, 967542] },
+        { sensor: [2725804, 2088998], beacon: [2816994, 2000000] },
+        { sensor: [3574367, 927734], beacon: [1932544, 967542] },
+        { sensor: [2939332, 2652370], beacon: [3454737, 2547103] },
+        { sensor: [2495207, 3681541], beacon: [2431326, 3703654] },
+        { sensor: [2878022, 2054681], beacon: [2816994, 2000000] },
+        { sensor: [1539330, 3235516], beacon: [1972543, 2563441] },
+        { sensor: [545433, 533006], beacon: [-538634, 69689] },
+        { sensor: [1828919, 3980292], beacon: [2431326, 3703654] },
+        { sensor: [3275749, 2937931], beacon: [3454737, 2547103] },
+        { sensor: [600151, 3861189], beacon: [2431326, 3703654] },
+        { sensor: [2089915, 28975], beacon: [1932544, 967542] },
+        { sensor: [2960422, 3942666], beacon: [2594144, 3746832] },
+        { sensor: [3785103, 3905392], beacon: [2594144, 3746832] },
+        { sensor: [1721958, 1077173], beacon: [1932544, 967542] },
+        { sensor: [2515176, 3751221], beacon: [2594144, 3746832] },
+        { sensor: [2469443, 2109095], beacon: [2816994, 2000000] },
+        { sensor: [1777006, 904092], beacon: [1932544, 967542] },
+        { sensor: [2789314, 3316115], beacon: [2594144, 3746832] },
+        { sensor: [3538777, 2695066], beacon: [3454737, 2547103] },
+        { sensor: [2299758, 2708004], beacon: [1972543, 2563441] },
+        { sensor: [2388386, 3234346], beacon: [2431326, 3703654] },
+      ];
+
+      data.forEach(item => {
+        const svg = document.getElementsByTagName('svg')[0];
+        const newElement = document.createElementNS("http://www.w3.org/2000/svg", 'polygon');
+
+        const rowOffset = item.beacon[1] - item.sensor[1];
+        const colOffset = item.beacon[0] - item.sensor[0];
+
+        const allMoves = Math.abs(rowOffset) + Math.abs(colOffset);
+
+        // <polygon points="200,10 250,190 160,210" style="fill:lime;stroke:purple;stroke-width:1" />
+
+        newElement.setAttribute("points", [
+          [item.sensor[0], item.sensor[1] - allMoves],
+          [item.sensor[0] + allMoves, item.sensor[1]],
+          [item.sensor[0], item.sensor[1] + allMoves],
+          [item.sensor[0] - allMoves, item.sensor[1]],
+        ].map(a => a.join(',')).join(' '));
+        // newElement.setAttribute('transform', 'rotate(45)')
+        newElement.setAttribute('opacity', 0.3)
+        newElement.setAttribute('fill', "orange");
+        newElement.setAttribute('stroke', "purple");
+
+        svg.appendChild(newElement);
+      })
+
+      // const canvas = document.querySelector("canvas");
+      // const ctx = canvas.getContext("2d");
+      // ctx.fillStyle = "red";
+      // ctx.rotate((45 * Math.PI) / 180);
+
+      // data.forEach((item) => {
+      //   console.log(args)
+
+      //   ctx.fillRect(...args);
+      //   // ctx.fillRect(1000, 1000, 10000, 10000);
+      // });
+
+      // ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+      // Reset transformation matrix to the identity matrix
+    </script>
+  </body>
+</html>
