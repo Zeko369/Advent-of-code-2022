@@ -28,39 +28,21 @@ import * as globals from "../shared/globals.js";
 
     const mix = (array) => (item, i) => {
       let index = array.findIndex((v) => v.index === item.index);
-      if (index === -1) {
-        return;
-      }
+      let newIndex = (index + item.value) % (array.length - 1);
 
-      let newIndex = index + item.value;
-      let offset = 0;
-
-      while (newIndex >= array.length) {
-        newIndex -= array.length;
-        offset++;
-      }
-      while (newIndex <= 0) {
-        newIndex += array.length;
-        offset--;
-      }
-
-      // console.log("Moving", number);
-      // console.log("Bef", tmp.join(", "));
-
-      array.splice(index, 1);
-      array.splice(newIndex + offset, 0, item);
-
-      // console.log("Got", tmp.join(", "));
-      // console.log("Exp", correct[i]);
-      // console.log("");
+      const [tmp] = array.splice(index, 1);
+      array.splice(newIndex, 0, tmp);
     };
 
     const taskArray1 = structuredClone(data);
     data.forEach(mix(taskArray1));
 
-    const taskArray2 = structuredClone(data).map((i) => ({ ...i, value: i.value * 811589153 }));
+    const KEY = 811589153;
+    const taskArray2 = structuredClone(data).map((i) => ({ ...i, value: i.value * KEY }));
+    console.log(taskArray2.map((i) => i.value).join(", "));
     for (let i = 0; i < 10; i++) {
       data.forEach(mix(taskArray2));
+      console.log(i, taskArray2.map((i) => i.value).join(", "));
     }
 
     const getSolution = (array) => {
@@ -74,9 +56,17 @@ import * as globals from "../shared/globals.js";
     score2 = getSolution(taskArray2);
 
     console.log("Task1", score);
+    if (isMain) {
+      console.log("Answe", 13289);
+    }
     isMain && (await copySolution(score));
 
     console.log("Task2", score2);
+    if (!isMain) {
+      console.log("Answe", 1623178306);
+    } else {
+      console.log("Wrong", -5191735811741);
+    }
     isMain && (await copySolution(score2));
   }
 })();
