@@ -28,7 +28,7 @@ import * as globals from "../shared/globals.js";
 
     const mix = (array) => (item, i) => {
       let index = array.findIndex((v) => v.index === item.index);
-      let newIndex = (index + item.value) % (array.length - 1);
+      let newIndex = (index + array[index].value) % (array.length - 1);
 
       const [tmp] = array.splice(index, 1);
       array.splice(newIndex, 0, tmp);
@@ -39,10 +39,10 @@ import * as globals from "../shared/globals.js";
 
     const KEY = 811589153;
     const taskArray2 = structuredClone(data).map((i) => ({ ...i, value: i.value * KEY }));
-    console.log(taskArray2.map((i) => i.value).join(", "));
+    // console.log(taskArray2.map((i) => i.value).join(", "));
     for (let i = 0; i < 10; i++) {
       data.forEach(mix(taskArray2));
-      console.log(i, taskArray2.map((i) => i.value).join(", "));
+      // console.log(i, taskArray2.map((i) => i.value).join(", "));
     }
 
     const getSolution = (array) => {
